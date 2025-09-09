@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="text-center">
+		{% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+			<div class="row align-items-center justify-content-center">
+				<div>
+					<h1 class="h1">Bienvenido</h1>
+					<p>
+						Para comenzar, inicie sesión
+					</p>
+					<a class="btn btn-primary" href="{{path('login')}}">Iniciar sesión</a>
+				</div>
+			</div>
+		{% else %}
+			<h1 class="h1">Bienvenido</h1>
+		{% endif %}
+
+	</div>
+
+{% endblock %}

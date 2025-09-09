@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}500{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center align-items-center min-60-vh">
+        <div class="col-lg-9">
+            <div id="error-500" class="uc-card card-bg--gray">
+                <div class="uc-card_body--xl">
+                    <div class="uc-subtitle">
+                        Error 500
+                    </div>
+                    <div class="h1 mb-24">
+                        Oops! Algo salió mal
+                    </div>
+                    <p>Estamos teniendo problemas técnicos en este momento. Por favor, inténtalo más tarde. Si el problema persiste, contáctanos para obtener ayuda.</p>
+                    <a href="{{ path('homepage') }}" class="uc-link text-weight--medium">
+                        Volver a la página de inicio <i class="uc-icon">keyboard_arrow_right</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

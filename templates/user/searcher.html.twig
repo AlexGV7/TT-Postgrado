@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+	{{ encore_entry_link_tags('select2-style') }}
+{% endblock %}
+
+{% block title %}Buscador
+{% endblock %}
+
+{% block body %}
+	<h1 class="h1">Buscador</h1>
+
+	<p>
+		Esta vista permite buscar un estudiante con Select2
+	</p>
+
+	<div class="border rounded p-32">
+		<label for="user-search" class="form-label">Buscar usuario</label>
+		<select id="user-search" class="form-control select2-users" style="width:100%;">
+			<option value="">Seleccione un usuario...</option>
+		</select>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('select') }}
+{% endblock %}

@@ -1,0 +1,73 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    app_url: '%env(APP_URL)%'
+
+    mailer_from_address: '%env(MAILER_FROM_ADDRESS)%'
+    mailer_from_name: '%env(MAILER_FROM_NAME)%'
+    use_mailer: '%env(bool:USE_MAILER)%'
+
+    wsdl.uri: '%env(WSDL_URI)%'
+    wsdl.auth: '%env(WSDL_AUTH)%'
+    wsdl.login: '%env(WSDL_LOGIN)%'
+    wsdl.password: '%env(WSDL_PASSWORD)%'
+    wsdl.cache: '%env(WSDL_CACHE)%'
+
+    sid.server: '%env(SID_SERVER)%'
+    sid.db: '%env(SID_DB)%'
+    sid.user: '%env(SID_USER)%'
+    sid.password: '%env(SID_PASSWORD)%'
+
+    USE_CAS_LOGIN: '%env(bool:USE_CAS_LOGIN)%'
+
+    cas_login_target: '%env(string:CAS_LOGIN_TARGET)%'
+    cas_logout_target: '%env(string:CAS_LOGOUT_TARGET)%'
+    cas_host: '%env(string:CAS_HOST)%'
+    cas_port: '%env(int:CAS_PORT)%'
+    cas_path: '%env(string:CAS_PATH)%'
+    cas_gateway: '%env(bool:CAS_GATEWAY)%'
+
+l3_cas_guard:
+    host: '%env(string:CAS_HOST)%'
+    path: '%env(string:CAS_PATH)%'
+    port: '%env(int:CAS_PORT)%'
+    ca: '%env(bool:CAS_CA)%'
+    handleLogoutRequest: '%env(bool:CAS_HANDLE_LOGOUT_REQUEST)%'
+    casServiceBaseUrl: '%env(string:CAS_SERVICE_BASE_URL)%'
+    casLogoutTarget: '%env(string:CAS_LOGOUT_TARGET)%'
+    force: '%env(bool:CAS_FORCE)%'
+    gateway: '%env(bool:CAS_GATEWAY)%'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Security\SidingAuthenticator:
+        arguments:
+            $passwordEncoder: '@security.password_hasher'
+
+    App\Service\NotificationService:
+        arguments:
+            $mailerLogger: '@monolog.logger.mailer'
+            $mailer: '@mailer.mailer'
+            $fromAddress: '%mailer_from_address%'
+            $fromName: '%mailer_from_name%'
+            $appUrl : '%app_url%'
+            $useMailer: '%use_mailer%'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

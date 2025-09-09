@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center align-items-center min-60-vh">
+        <div class="col-lg-9">
+            <div id="error-generic" class="uc-card card-bg--gray">
+                <div class="uc-card_body--xl">
+                    <div class="uc-subtitle">
+                        Error {{ status_code|default('') }}
+                    </div>
+                    <div class="h1 mb-24">
+                        {{ status_text|default('Ha ocurrido un error') }}
+                    </div>
+                    <p>
+                        Lo sentimos, ha ocurrido un error inesperado.
+                        Por favor intenta nuevamente o regresa a la página de inicio.
+                    </p>
+                    <a href="{{ path('homepage') }}" class="uc-link text-weight--medium">
+                        Volver a la página de inicio <i class="uc-icon">keyboard_arrow_right</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

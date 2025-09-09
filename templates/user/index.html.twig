@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuarios
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-wrap align-items-center gap-2">
+        <h1 class="mr-12">Usuarios</h1>
+        <a href="{{ path('app_user_new') }}" class="btn btn-primary">
+            Agregar nuevo <i class="material-icons icon">add</i>
+        </a>
+    </div>
+
+	{% include 'components/data-table.html.twig'
+        with {
+            entities: users,
+            columns: [
+                { label: 'ID', property: 'id'},
+                { label: 'Email', property: 'email'},
+                { label: 'Nombre Completo', getter: 'getFullName'},
+            ],
+            actions: [
+                { label: 'ver', class:'btn btn-xs btn-info', route: 'app_user_show', params: { 'id': 'id' } },
+                { label: 'editar', class:'btn btn-xs btn-secondary', route: 'app_user_edit', params: { 'id': 'id' }, icon: 'edit' },
+            ]
+    }%}
+
+{% endblock %}
+

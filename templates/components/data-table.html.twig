@@ -1,0 +1,113 @@
+{% if serverSide|default(false) %}
+
+<div class="container-fluid p-0">
+    <div class="table-responsive">
+        <table class="table table-striped {{customClass}}">
+                <thead>
+                    <tr>
+                        {% for column in columns %}
+                            <th>{{ column.label }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+        </table>
+    </div>
+</div>
+
+{% else %}
+
+<div class="container-fluid p-0">
+    <div class="table-responsive">
+        <table class="table table-striped {{ customClass|default('datatable-basic') }}">
+            <thead>
+                <tr>
+                    {% for column in columns %}
+                        <th>{{ column.label }}</th>
+                    {% endfor %}
+                    {% if actions|default([]) is not empty %}
+                        <th>Acciones</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        {% for column in columns %}
+                            <td {% if column.isDate|default(false) or column.isDateTime|default(false) %}data-sort="{{ attribute(entity, column.getter|default(column.property))|date('Y-m-d H:i:s') }}"{% endif %}>
+                                {% if column.getter|default(null) %}
+                                    {% set value = attribute(entity, column.getter) %}
+                                {% else %}
+                                    {% set value = attribute(entity, column.property) %}
+                                {% endif %}
+
+                                {% if value is same as(true) %}
+                                    Sí
+                                {% elseif value is same as(false) %}
+                                    No
+                                {% elseif value is iterable %}
+                                    <ul>
+                                        {% for item in value %}
+                                            <li>{{ item }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% elseif value is not empty and value|length > 256 %}
+                                    <small>{{ value|raw }}</small>
+                                {% elseif column.isDate|default(false) %}
+                                    {{ value|date('d/m/Y') }}
+                                    {% elseif column.isDateTime|default(false) %}
+                                    {{ value|date('d/m/Y H:i:s') }}
+                                {% elseif value is empty %}
+                                    - - -
+                                {% else %}
+                                    {{ value|raw }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        {% if actions|default([]) is not empty %}
+                            <td>
+                                {% for action in actions %}
+                                    {% if attribute(entity, action.conditional|default('id')) %}
+                                        <a 
+                                            class="{{ action.class|default('btn btn-xs btn-info') }}"
+                                            
+                                            {% if action.isUrl|default(false) %}
+                                                href="{{ action.route|default('#') }}"
+                                            {% else %}
+                                                href="{{ path(action.route, action.params|map(p => attribute(entity, p))) }}"
+                                            {% endif %}
+
+                                            target="{{action.target|default('')}}"
+                                        >
+                                            {{ action.label }}
+                                            {% if action.icon|default(false) %}
+                                                <i class="material-icons" style="font-size: inherit; vertical-align: middle;">
+                                                    {{ action.icon }}
+                                                </i>
+                                            {% endif %}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% else %}
+                    <tr>
+                        {% for column in columns %}
+                            <td class="text-muted"> - - </td>
+                        {% endfor %}
+                        {% if actions|default([]) is not empty %}
+                            <td class="text-muted"> - - </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endif %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('tables') }}        
+{% endblock %}

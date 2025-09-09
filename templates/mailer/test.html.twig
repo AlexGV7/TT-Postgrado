@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="mb-3">
+		<strong>Configuración actual:</strong>
+		<ul class="list-group">
+			<li class="list-group-item">
+				<span class="fw-bold">USE_MAILER:</span>
+				{{ info.USE_MAILER }}
+			</li>
+			<li class="list-group-item d-flex align-items-center">
+				<span class="fw-bold me-2">MAILER_DSN:</span>
+				<input type="password" id="dsn-field" value="{{ info.MAILER_DSN }}" readonly class="form-control-plaintext flex-grow-1" style="background:transparent;">
+				<button type="button" class="btn btn-secondary" onclick="toggleDsn()" title="Mostrar/ocultar DSN">
+					<span class="material-icons icon" id="dsn-icon">visibility</span>
+				</button>
+			</li>
+			<li class="list-group-item">
+				<span class="fw-bold">Email del usuario actual:</span>
+				{{ info.USER_EMAIL }}
+			</li>
+		</ul>
+	</div>
+	<div class="alert {% if success %}alert-success{% else %}alert-danger{% endif %}">
+		{{ message }}
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+	 <script>
+        function toggleDsn() {
+            const field = document.getElementById('dsn-field');
+            const icon = document.getElementById('dsn-icon');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                field.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+    </script>
+{% endblock %}

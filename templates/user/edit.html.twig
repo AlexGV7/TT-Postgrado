@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+{% block body %}
+    <h1 class="h1">Editar Usuario</h1>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Guardar Cambios'}) }}
+{% endblock %}

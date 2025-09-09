@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="text-center">
+        <div class="row align-items-center justify-content-center min-60-vh">
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                {{ include('login/_form.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

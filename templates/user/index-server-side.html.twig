@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-wrap align-items-center gap-2">
+        <h1 class="mr-12">Usuarios</h1>
+        <a href="{{ path('app_user_new') }}" class="btn btn-primary">
+            Agregar nuevo <i class="material-icons icon">add</i>
+        </a>
+    </div>
+
+    {% include 'components/data-table.html.twig'
+        with {
+            customClass: 'datatable-users',
+            serverSide: true,
+            columns: [
+                { label: 'ID'},
+                { label: 'Email'},
+                { label: 'Acciones'}
+            ],
+    }%}
+    
+{% endblock %}

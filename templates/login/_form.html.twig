@@ -1,0 +1,29 @@
+<div class="col col-lg-4 col-md-8 p-12 card">
+    <h2 class="h2 mb-24">Iniciar sesión</h2>
+    
+    {% if error %}
+        <div class="alert alert-warning">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+
+    <form action="{{ path('login') }}" method="post">
+        <div class="mb-3 text-start">
+            <label for="username" class="form-label">Usuario Siding o Email:</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control">
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <div class="mb-3 text-start">
+            <label for="password" class="form-label">Contraseña:</label>
+            <input type="password" id="password" name="_password" class="form-control">
+        </div>
+        {# If you want to control the URL the user is redirected to on success
+        <input type="hidden" name="_target_path" value="/account"> #}
+
+        <button type="submit" class="btn btn-primary mb-4 width-100">Iniciar Sesión</button>
+
+    </form>
+
+    <a href="https://micuenta.uc.cl/#olvidaclave">¿Olvidó su contraseña?</a>
+</div>

@@ -1,0 +1,70 @@
+// Bootstrap SCSS
+@use 'bootstrap.scss' as *;
+
+// Custom Styles
+@use 'general.scss' as *;
+
+// DataTables CSS
+@import '~datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+@import '~datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css';
+
+// UC Kit Digital
+@import '~@digitaluc/uc-kitdigital/dist/css/uc-kitdigital.css';
+
+// Bootstrap Icons
+@import '~bootstrap-icons/font/bootstrap-icons.css';
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+.loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('../imgs/loading.gif') 50% 50% no-repeat rgb(255, 255, 255);
+    background-size: 200px;
+    opacity: .85;
+}
+
+//colores de ingeniería
+$ing-black: #000000;
+$ing-black-alt: #363534;
+$ing-yellow: #fed802;
+$ing-yellow-alt: #E6C400;
+$ing-grey: #4a4a4a;
+
+//botones de ingenieria
+.btn-ing {
+    color: White;
+    background-color: $ing-black;
+    border-color: $ing-black;
+}
+
+.btn-ing:hover {
+    color: $ing-black;
+    background-color: $ing-yellow;
+    border-color: $ing-yellow-alt;
+}
+
+.btn-ing2 {
+    color: $ing-black;
+    background-color: $ing-yellow;
+    border-color: $ing-yellow-alt;
+}
+
+.btn-ing2:hover {
+    color: White;
+    background-color: $ing-black;
+    border-color: $ing-black;
+}

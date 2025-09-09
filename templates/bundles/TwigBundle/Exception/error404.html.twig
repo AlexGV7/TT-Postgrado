@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}404{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center align-items-center min-60-vh">
+        <div class="col-lg-9"><div id="error-404" class="uc-card card-bg--gray">
+            <div class="uc-card_body--xl"><div class="uc-subtitle">
+                Error 404
+            </div>
+            <div class="h1 mb-24">
+                Lo sentimos, no pudimos llevarte a la página que querías.
+            </div>
+            <p>La página que estás buscando ha sido modificada, borrada o no existe. Te sugerimos usar el menú para seguir navegando</p>
+            <a href="{{ path('homepage') }}" class="uc-link text-weight--medium">
+                Volver a la página de inicio <i class="uc-icon">keyboard_arrow_right</i>
+            </a>
+        </div>
+    </div>
+{% endblock %}

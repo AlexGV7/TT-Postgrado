@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			{% block title %}Symfony-App
+			{% endblock %}
+		</title>
+		{% block stylesheets %}
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+		<link rel="icon" type="image/x-icon" href="{{asset('build/imgs/uc_icon.png')}}"/>
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+
+	{% for flash_message in app.session.flashBag.get('notice') %}
+		<div class="alert alert-{{ flash_message.alert }} alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert">
+				<span aria-hidden="true">&times;</span>
+				<span class="sr-only">Cerrar</span>
+			</button>
+			<strong>{{ flash_message.title }}</strong>
+			{{ flash_message.message }}
+		</div>
+	{% endfor %}
+
+	<body>
+		<header class="uc-header">
+			<div id="uc-global-topbar"></div>
+			<nav
+				class="uc-navbar">
+				<!-- Menú para versión Escritorio -->
+				<div class="container d-none d-lg-block">
+					<div class="row">
+						<div class="col-lg-3 col-xl-2">
+							<img src="https://kit-digital-uc-prod.s3.amazonaws.com/assets/logo-uc-azul.svg" alt="Pontificia Universidad Católica de Chile" class="img-fluid"/>
+						</div>
+						<div class="col-lg-8 col-xl-9">
+							<div class="h2 text-font--serif text-color--blue mt-24">
+								Symfony-App
+							</div>
+							<div class="text-color--gray p-size--lg mb-0">
+								Escuela de Ingeniería
+							</div>
+						</div>
+					</div>
+					<ul class="uc-navbar_nav">
+						<li class="nav-item">
+							<a href="{{path('homepage')}}" class="uc-btn btn-inline">Inicio</a>
+						</li>
+						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+							{% if is_granted('ROLE_ADMIN') %}
+								<li class="nav-item">
+									<a href="{{path('test_mailer')}}" class="uc-btn btn-inline">Test Mailer</a>
+								</li>
+							{% endif %}
+
+							<li class="nav-item">
+								<a href="{{path('app_user_index')}}" class="uc-btn btn-inline">Usuarios</a>
+							</li>
+
+							<li class="nav-item">
+								<a href="{{path('app_user_searcher')}}" class="uc-btn btn-inline">Demo Select2</a>
+							</li>
+
+							<li class="nav-item uc-navbar-dropdown">
+								<img {% if app.user.getPicture == "https://intrawww.ing.puc.cl/siding/datos/fotos/publicas/" %} src="{{asset('build/imgs/person_600dp_B7B7B7.png')}}" {% else %} src="{{ app.user.getPicture }}" {% endif %} class="nav-profile-photo mr-12" alt="profile photo"/>
+								{% if is_granted('ROLE_ADMIN') %}
+									<a href="{{path('homepage')}}" class="uc-btn btn-inline">Menú de admin
+										<i class="uc-icon">arrow_drop_down</i>
+									</a>
+									<ul class="uc-navbar-dropdown_menu">
+										<li class="dropdown_item--heading">
+											<a class="uc-btn" href="{{path('app_user_server_side_index')}}">Usuarios con ServerSide</a>
+										</li>
+										<hr role="separator" class="divider">
+										<li class="dropdown_item--heading">
+											<a class="uc-btn" href="{{path('app_user_show', {'id': app.user.id})}}">Perfil</a>
+										</li>
+										<li class="dropdown_item--heading">
+											<a class="uc-btn" style="justify-content: normal;" href="{{path('logout')}}">
+												Cerrar sesión &nbsp;<i class="uc-icon">logout</i>
+											</a>
+										</li>
+										{% if is_granted('IS_IMPERSONATOR') %}
+											<li class="dropdown_item--heading">
+												<a class="uc-btn" href="{{path('app_user_index', {'ditto': '_exit'})}}">Dejar de personificar</a>
+											</li>
+										{% endif %}
+									</ul>
+								{% else %}
+									<a href="{{path('homepage')}}" class="uc-btn btn-inline">Mi menú
+										<i class="uc-icon">arrow_drop_down</i>
+									</a>
+									<ul class="uc-navbar-dropdown_menu">
+										<li class="dropdown_item--heading">
+											<a class="uc-btn" href="{{path('app_user_show', {'id': app.user.id})}}">Perfil</a>
+										</li>
+										<hr role="separator" class="divider">
+										<li class="dropdown_item--heading">
+											<a class="uc-btn" style="justify-content: normal;" href="{{path('logout')}}">
+												Cerrar sesión &nbsp;<i class="uc-icon">logout</i>
+											</a>
+										</li>
+										{% if is_granted('IS_IMPERSONATOR') %}
+											<li class="dropdown_item--heading">
+												<a class="uc-btn" href="{{path('app_user_index', {'ditto': '_exit'})}}">Dejar de personificar</a>
+											</li>
+										{% endif %}
+									</ul>
+								{% endif %}
+							</li>
+						{% else %}
+							<li class="nav-item">
+								<a class="uc-btn btn-inline" href="{{path('login')}}">Iniciar sesión &nbsp;<i class="uc-icon">login</i>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+
+				<!-- Menú para versión Móvil -->
+				<div class="uc-navbar_mobile navbar_mobile-slide d-block d-lg-none">
+					<div class="uc-navbar_mobile-bar navbar-brand">
+						<div class="uc-navbar_mobile-logo navbar-light">
+							<a href="{{path('homepage')}}" class="no-underline">
+								<div class="h2 text-font--serif text-color--blue">
+									Symfony-App
+								</div>
+							</a>
+						</div>
+						<a href="javascript:void(0);" class="uc-navbar_mobile-button">
+							<span class="uc-icon"></span>
+						</a>
+					</div>
+					<div class="uc-navbar_mobile-content">
+						<ul class="uc-navbar_mobile-list">
+							<li class="list-item">
+								<a href="{{path('homepage')}}">Inicio</a>
+							</li>
+							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+								{% if is_granted('ROLE_ADMIN') %}
+									<li class="list-item">
+										<a href="{{path('test_mailer')}}">Test Mailer</a>
+									</li>
+								{% endif %}
+
+								<li class="list-item">
+									<a href="{{path('app_user_index')}}">Usuarios</a>
+								</li>
+								<li class="list-item">
+									<a href="{{path('app_user_searcher')}}">Demo Select2</a>
+								</li>
+
+								<li class="list-item has-list-children">
+
+									{% if is_granted('ROLE_ADMIN') %}
+
+										<a class="list-open text-primary" href="#">
+											Menú de admin
+											<i class="uc-icon icon-size--sm">arrow_forward_ios</i>
+										</a>
+										<ul class="list-item list-children">
+											<li class="list-item">
+												<a href="#" class="list-close">
+													<div class="uc-icon icon-size--sm">arrow_back_ios</div>
+													Menú de admin
+												</a>
+											</li>
+											<li class="list-item">
+												<a href="{{path('app_user_server_side_index')}}">Usuarios con ServerSide</a>
+											</li>
+											<li class="list-item">
+												<a href="{{path('logout')}}">Cerrar sesión &nbsp;<i class="uc-icon">logout</i>
+												</a>
+											</li>
+											{% if is_granted('IS_IMPERSONATOR') %}
+												<li class="list-item">
+													<a href="{{path('app_app_user_index', {'ditto': '_exit'})}}">Dejar de personificar</a>
+												</li>
+											{% endif %}
+										</ul>
+
+									{% else %}
+
+										<a class="list-open text-primary" href="#">
+											Mi menú
+											<i class="uc-icon icon-size--sm">arrow_forward_ios</i>
+										</a>
+										<ul class="list-item list-children">
+											<li class="list-item">
+												<a href="#" class="list-close">
+													<div class="uc-icon icon-size--sm">arrow_back_ios</div>
+													Mi menú
+												</a>
+											</li>
+											<li class="list-item">
+												<a href="{{path('app_user_show', {'id': app.user.id})}}">Perfil</a>
+											</li>
+											<li class="list-item">
+												<a href="{{path('logout')}}">Cerrar sesión &nbsp;<i class="uc-icon">logout</i>
+												</a>
+											</li>
+
+											{% if is_granted('IS_IMPERSONATOR') %}
+												<li class="list-item">
+													<a href="{{path('app_user_index', {'ditto': '_exit'})}}">Dejar de personificar</a>
+												</li>
+											{% endif %}
+
+										</ul>
+									{% endif %}
+
+								</li>
+							{% else %}
+								<li class="list-item">
+									<a class="text-primary" href="{{path('login')}}">Iniciar sesión &nbsp;<i class="uc-icon">login</i>
+									</a>
+								</li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<main class="my-24">
+			<div class="loader" id="loader"></div>
+			<div class="container-lg">
+				{% for flash_message in app.session.flashBag.get('notice') %}
+					<div class="alert alert-{{ flash_message.alert|default('danger') }} alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert">
+							<span aria-hidden="true">&times;</span>
+							<span class="sr-only">Cerrar</span>
+						</button>
+						<strong>{{ flash_message.title }}</strong>
+						{{ flash_message.message|raw }}
+					</div>
+				{% endfor %}
+				{% for label, messages in app.flashes %}
+					<div class="alert alert-{{ label }} alert-dismissible fade show mt-16" role="alert">
+						{% for message in messages %}
+							{{ message|raw }}
+						{% endfor %}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+				{% block body %}{% endblock %}
+			</div>
+		</main>
+		<footer id="app-footer" class="uc-footer">
+			<div class="container pb-48">
+				<div class="row">
+					<div class="col-7 col-md-3 col-xl-2 mb-32">
+						<a href="/">
+							<img src="https://kit-digital-uc-prod.s3.amazonaws.com/assets/logo-uc-blanco.svg" alt="Pontificia Universidad Católica de Chile" class="img-fluid"/>
+						</a>
+					</div>
+					<div class="col-lg-8 offset-lg-1">
+						<div class="h2 color-white text-font--serif mt-28">
+							Subdirección de Desarrollo Informático
+						</div>
+						<div class="p-size--lg color-white text-font--serif">
+							Escuela de Ingeniería
+							<br>
+							Pontificia Universidad Católica de Chile
+						</div>
+						<ul
+							class="uc-footer_social">
+							<!-- agregar enlaces a redes sociales correspondientes  -->
+							<li>
+								<a href="https://www.linkedin.com/company/escuela-de-ingeniería-uc" title="Linkedin Ingeniería UC" target="_blank">
+									<img src="https://kit-digital-uc-prod.s3.amazonaws.com/assets/social-icon-linkedin.svg" alt="Linkedin"/>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html></body></html>

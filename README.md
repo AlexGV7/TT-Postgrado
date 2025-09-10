@@ -75,3 +75,6 @@ Consulta la lista completa y explicaciones de los comandos útiles para desarrol
 - Mejor manejo de las constraseñas guardadas de usuarios, para login por DB
 - Mejorar el rendimiento de la applicación para que cumpla con LightHouse
 - Utilizar BS4.6 en lugar de BS5 si se busca mayor compatibilidad con el kit digital
+
+## Links de utilidad
+- [Prueba de entorno](https://github.com/symfony/demo)

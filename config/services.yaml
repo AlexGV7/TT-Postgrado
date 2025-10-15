@@ -9,8 +9,8 @@ parameters:
     mailer_from_address: '%env(MAILER_FROM_ADDRESS)%'
     mailer_from_name: '%env(MAILER_FROM_NAME)%'
     use_mailer: '%env(bool:USE_MAILER)%'
-
     wsdl.uri: '%env(WSDL_URI)%'
+
     wsdl.auth: '%env(WSDL_AUTH)%'
     wsdl.login: '%env(WSDL_LOGIN)%'
     wsdl.password: '%env(WSDL_PASSWORD)%'
